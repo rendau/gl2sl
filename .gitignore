@@ -5,6 +5,7 @@
 .idea/*
 release/*
 conf.yml
-conf.yaml
+conf.yml
+conf_test.yml
 /svc
 
