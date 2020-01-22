@@ -16,7 +16,11 @@ func TestMain(t *testing.M) {
 	viper.SetConfigFile("conf_test.yml")
 	_ = viper.ReadInConfig()
 
-	cr = core.NewSt(viper.GetString("slack_webhook_url"))
+	cr = core.NewSt(
+		viper.GetString("slack_webhook_url"),
+		viper.GetString("slack_channel"),
+		viper.GetString("graylog_link"),
+	)
 
 	exitCode := t.Run()
 

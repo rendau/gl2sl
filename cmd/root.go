@@ -17,7 +17,11 @@ import (
 var rootCmd = &cobra.Command{
 	Use: "gl2sl",
 	Run: func(cmd *cobra.Command, args []string) {
-		cr := core.NewSt(viper.GetString("slack_webhook_url"))
+		cr := core.NewSt(
+			viper.GetString("slack_webhook_url"),
+			viper.GetString("slack_channel"),
+			viper.GetString("graylog_link"),
+		)
 
 		httpApi := http_api.NewApi(
 			viper.GetString("http_listen"),

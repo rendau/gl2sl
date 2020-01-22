@@ -12,6 +12,8 @@ import (
 
 type St struct {
 	slackWebhookUrl string
+	channel         string
+	glLink          string
 }
 
 type MsgSt struct {
@@ -28,6 +30,7 @@ type MsgBacklogFieldsSt struct {
 }
 
 type SlackMsgSt struct {
+	Channel  *string           `json:"channel,omitempty"`
 	Username string            `json:"username"`
 	Text     string            `json:"text"`
 	Blocks   []SlackMsgBlockSt `json:"blocks"`
@@ -43,9 +46,11 @@ type SlackMsgBlockTextSt struct {
 	Text string `json:"text"`
 }
 
-func NewSt(slackWebhookUrl string) *St {
+func NewSt(slackWebhookUrl, channel, glLink string) *St {
 	return &St{
 		slackWebhookUrl: slackWebhookUrl,
+		channel:         channel,
+		glLink:          glLink,
 	}
 }
 
@@ -72,6 +77,9 @@ func (c *St) HandleMessage(msgBytes []byte) error {
 		} else {
 			rows = append(rows, fmt.Sprintf("       message: *%s*", bl.Message))
 		}
+		if c.glLink != "" {
+			rows = append(rows, "<"+c.glLink+"|GrayLog>")
+		}
 		texts = append(texts, strings.Join(rows, "\n"))
 	}
 
@@ -91,6 +99,10 @@ func (c *St) sendSlackText(texts []string) error {
 	slackMsg := SlackMsgSt{
 		Username: "GrayLog",
 		Text:     "Message from GrayLog",
+	}
+
+	if c.channel != "" {
+		slackMsg.Channel = &c.channel
 	}
 
 	for _, text := range texts {
