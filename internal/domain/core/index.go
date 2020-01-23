@@ -84,9 +84,9 @@ func (c *St) HandleMessage(msgBytes []byte) error {
 		texts = append(texts, strings.Join(rows, "\n"))
 	}
 
-	if len(texts) == 0 {
-		log.Println("Undefined message:", string(msgBytes))
-	} else {
+	log.Println(string(msgBytes))
+
+	if len(texts) > 0 {
 		err = c.sendSlackText(texts)
 		if err != nil {
 			return err
