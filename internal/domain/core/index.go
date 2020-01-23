@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -83,9 +84,13 @@ func (c *St) HandleMessage(msgBytes []byte) error {
 		texts = append(texts, strings.Join(rows, "\n"))
 	}
 
-	err = c.sendSlackText(texts)
-	if err != nil {
-		return err
+	if len(texts) == 0 {
+		log.Println("Undefined message:", string(msgBytes))
+	} else {
+		err = c.sendSlackText(texts)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
