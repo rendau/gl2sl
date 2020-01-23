@@ -71,7 +71,7 @@ func (c *St) HandleMessage(msgBytes []byte) error {
 			rows = append(rows, "*"+bl.Fields.ContainerName+"*:")
 		}
 		if bl.Fields.GlMessageId != "" {
-			rows = append(rows, "message_id: *"+bl.Fields.ContainerName+"*")
+			rows = append(rows, "       message_id: *"+bl.Fields.GlMessageId+"*")
 		}
 		blMsg := map[string]interface{}{}
 		err = json.Unmarshal([]byte(bl.Message), &blMsg)
