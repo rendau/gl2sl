@@ -18,7 +18,8 @@ type St struct {
 }
 
 type MsgSt struct {
-	Backlog []MsgBacklogSt `json:"backlog"`
+	Backlog []MsgBacklogSt         `json:"backlog"`
+	Fields  map[string]interface{} `json:"fields"`
 }
 
 type MsgBacklogSt struct {
@@ -82,6 +83,14 @@ func (c *St) HandleMessage(msgBytes []byte) error {
 		} else {
 			rows = append(rows, fmt.Sprintf("       message: *%s*", bl.Message))
 		}
+
+		if len(msg.Fields) > 0 {
+			rows = append(rows, fmt.Sprintf("    fields:"))
+			for k, v := range msg.Fields {
+				rows = append(rows, fmt.Sprintf("       %s: *%v*", k, v))
+			}
+		}
+
 		if c.glLink != "" {
 			rows = append(rows, "<"+c.glLink+"|GrayLog>")
 		}
