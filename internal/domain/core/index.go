@@ -28,6 +28,7 @@ type MsgBacklogSt struct {
 
 type MsgBacklogFieldsSt struct {
 	ContainerName string `json:"container_name"`
+	GlMessageId   string `json:"gl2_message_id"`
 }
 
 type SlackMsgSt struct {
@@ -68,6 +69,9 @@ func (c *St) HandleMessage(msgBytes []byte) error {
 		rows = nil
 		if bl.Fields.ContainerName != "" {
 			rows = append(rows, "*"+bl.Fields.ContainerName+"*:")
+		}
+		if bl.Fields.GlMessageId != "" {
+			rows = append(rows, "message_id: *"+bl.Fields.ContainerName+"*")
 		}
 		blMsg := map[string]interface{}{}
 		err = json.Unmarshal([]byte(bl.Message), &blMsg)
